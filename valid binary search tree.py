@@ -14,10 +14,8 @@ class Solution(object):
         """
         return self.isValidBSTDo(root,-sys.maxint,sys.maxint)
     def isValidBSTDo(self,root,l,r):
-        
         if not root:
             return True
-        print root.val,l,r
         if root.val <= l or root.val >= r:
             return False
         return self.isValidBSTDo(root.left,l,min(root.val,r)) and self.isValidBSTDo(root.right,max(root.val,l),r)
