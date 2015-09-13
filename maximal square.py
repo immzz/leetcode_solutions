@@ -17,20 +17,9 @@ class Solution(object):
         
         for i in xrange(1,len(matrix)):
             for j in xrange(1,len(matrix[i])):
-                if matrix[i][j] == '0':
-                    res[i][j] = 0
-                    continue
-                if matrix[i-1][j-1] == '0':
-                    res[i][j] = 1
-                    continue
-                if res[i-1][j] >= res[i-1][j-1] and res[i][j-1] >= res[i-1][j-1]:
-                    res[i][j] = res[i-1][j-1] + 1
-                elif matrix[i-1][j] == '1' and matrix[i][j-1] == '1':
-                    res[i][j] = 2
-                else:
-                    res[i][j] = 1
+                if matrix[i][j] == '1':
+                    res[i][j] = min(res[i-1][j-1],res[i-1][j],res[i][j-1])+1
                 m = max(m,res[i][j])
-        #print res
         return m**2
 
 a = \

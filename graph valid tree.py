@@ -7,18 +7,19 @@ class Solution(object):
         """
         if len(edges) != n-1:
             return False
-        dic = {}
+        adj_list = [[] for _ in xrange(n)]
+        visited = [False]*n
         for edge in edges:
-            if edge[0] not in dic:
-                dic[edge[0]] = [edge]
-            else:
-                dic[edge[0]].append(edge)
-            if edge[1] not in dic:
-                dic[edge[1]] = [edge]
-            else:
-                dic[edge[1]].append(edge)
-        while True:
-            for key,val in dic.items():
-                if len(val) == 1:
-                    
+            adj_list[edge[0]].append(edge[1])
+            adj_list[edge[1]].append(edge[0])
+        self.traverse(visited,adj_list,0)
+        return all(visited)
         
+    def traverse(self,visited,adj_list,i):
+        visited[i] = True
+        for j in adj_list[i]:
+            if not visited[j]:
+                self.traverse(visited,adj_list,j)
+        
+sol = Solution()
+print sol.validTree(5, [[0,1],[0,4],[1,4],[2,3]])
