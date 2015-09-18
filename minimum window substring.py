@@ -1,44 +1,43 @@
-import sys
 class Solution:
     # @param {string} s
     # @param {string} t
     # @return {string}
-    
-    # corner case: "a", "a" -> "a"
-    # corner case: "a", "aa" -> ""
     def minWindow(self, s, t):
-        dic = {c:None for c in t}
-        start = sys.maxint
-        end = -1
-        minstart = sys.maxint
-        minend = -1
-        min = sys.maxint
-        for i in xrange(len(s)):
-            if s[i] not in dic:
+        count_dict = {}
+        for c in t:
+            if c not in count_dict:
+                count_dict[c] = 1
+            else:
+                count_dict[c] += 1
+        run_dict = {}
+        for c in count_dict:
+            run_dict[c] = 0
+        remaining = len(t)
+        start,end = 0,0
+        min_str = ""
+        min_len = sys.maxint
+        while end < len(s):
+            if s[end] not in count_dict:
+                end += 1
                 continue
-            dic[s[i]] = i
-            all_filled = True
-            current_min = sys.maxint
-            current_max = -1
-            for v in dic.values():
-                if v is None:
-                    all_filled = False
-                else:
-                    if current_min > v:
-                        current_min = v
-                    if current_max < v:
-                        current_max = v
-            if all_filled:
-                end = current_max
-                start = current_min
-                if end - start < min:
-                    min = end-start
-                    minstart = start
-                    minend = end
-        if min == sys.maxint:
-            return ""
-        else:
-            return s[minstart:minend+1]
+            run_dict[s[end]] += 1
+            if run_dict[s[end]] <= count_dict[s[end]]:
+                remaining -= 1
+            if remaining == 0:
+                while start <= end and remaining == 0:
+                    if s[start] not in count_dict:
+                        start += 1
+                        continue
+                    run_dict[s[start]] -= 1
+                    if run_dict[s[start]] < count_dict[s[start]]:
+                        remaining += 1
+                        if end - start + 1 < min_len:
+                            min_len = end-start+1
+                            min_str = s[start:end+1]
+                    start += 1
+            end += 1
+        return min_str
+                    
+                
             
-sol = Solution()
-print sol.minWindow("a", "a")
+            

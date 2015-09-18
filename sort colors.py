@@ -1,23 +1,23 @@
-class Solution:
-    # @param {integer[]} nums
-    # @return {void} Do not return anything, modify nums in-place instead.
+class Solution(object):
     def sortColors(self, nums):
-        red_ptr = -1
-        blue_ptr = len(nums)
+        """
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        r,b = 0,len(nums)-1
         i = 0
-        while i < blue_ptr and i < len(nums) and red_ptr < len(nums):
-            print i
-            if nums[i] == 0:
-                red_ptr += 1
-                nums[i] = nums[red_ptr]
-                nums[red_ptr] = 0
-                i += 1
-            elif nums[i] == 2:
-                blue_ptr -= 1
-                nums[i] = nums[blue_ptr]
-                nums[blue_ptr] = 2
-            else:
-                i += 1
+        while i <= b:
+            while i >= r and i <= b and nums[i] != 1:
+                if nums[i] == 0:
+                    nums[i] = nums[r]
+                    nums[r] = 0
+                    r += 1
+                elif nums[i] == 2:
+                    nums[i] = nums[b]
+                    nums[b] = 2
+                    b -= 1
+            i += 1
+                    
             
         
 sol = Solution()
