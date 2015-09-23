@@ -19,13 +19,11 @@ class Solution(object):
             new_reachable = Set([])
             
             for word in current:
-                remove_list = []
-                for candidate in wordDict:
-                    if self.oneCharacterDifferent(word,candidate):
-                        remove_list.append(candidate)
-                        new_reachable.add(candidate)
-                for toremove in remove_list:
-                    wordDict.remove(toremove)
+                for i in xrange(len(word)):
+                    for ch in 'abcdefghijklmnopqrstuvwxyz':
+                        if ch != word[i] and (word[:i]+ch+word[i+1:]) in wordDict:
+                            wordDict.remove(word[:i]+ch+word[i+1:]) 
+                            new_reachable.add(word[:i]+ch+word[i+1:])
             current = new_reachable
             #print current
             count += 1
