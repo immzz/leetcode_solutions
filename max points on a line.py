@@ -1,49 +1,42 @@
 # Definition for a point.
-class Point:
+class Point(object):
     def __init__(self, a=0, b=0):
         self.x = a
         self.y = b
 
-class Solution:
-    # @param {Point[]} points
-    # @return {integer}
-    
-    # corner case: [[1,1],[1,1],[2,2],[2,2]] -> 4
+class Solution(object):
     def maxPoints(self, points):
-        if not points:
+        """
+        :type points: List[Point]
+        :rtype: int
+        """
+        if len(points) == 0:
             return 0
         if len(points) == 1:
             return 1
-        max = 2
-        for i in xrange(len(points)):
-            if i == 0:
-                continue
-            current = 2
-            if points[0].x == points[i].x:
-                for j in xrange(1,len(points)):
-                    if j == i:
-                        continue
-                    if points[j].x == points[i].x:
-                        current += 1
-                if current > max:
-                    max = current
-            else:
-                a = float(points[0].y-points[i].y)/(points[0].x-points[i].x)
-                b = points[i].y - a*points[i].x
-                for j in xrange(1,len(points)):
-                    if j == i:
-                        continue
-                    if points[i].x != points[j].x:
-                        tempa = float(points[j].y-points[i].y)/(points[j].x-points[i].x)
-                        tempb = points[i].y - tempa*points[i].x
-                        if tempa == a and tempb == b:
-                            current += 1
-                    elif points[i].y == points[j].y:
-                        current += 1
-                if current > max:
-                    max = current
-        return max
+        res = 0
+        for i in xrange(len(points)-1):
+            count = 1
+            dic = {}
+            for j in xrange(i+1,len(points)):
+                if points[i].x == points[j].x and points[i].y == points[j].y:
+                    count += 1
+                    continue
+                if points[i].x == points[j].x:
+                    if 'ver' not in dic:
+                        dic['ver'] = 1
+                    else:
+                        dic['ver'] += 1
+                    continue
+                slope = float(points[j].y-points[i].y)/(points[j].x-points[i].x)
+                if slope not in dic:
+                    dic[slope] = 1
+                else:
+                    dic[slope] += 1
+            total = count + (max(dic.values()) if len(dic.values()) > 0 else 0)
+            if total > res:
+                res = total
+        return res
 
-ps = [Point(1,1),Point(1,1),Point(2,2),Point(2,2)]
 sol = Solution()
-print sol.maxPoints(ps)
+print sol.maxPoints([Point(0,0),Point(0,0)])
